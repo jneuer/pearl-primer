@@ -1,0 +1,60 @@
+---
+title: "Study Questions"
+output: html_notebook
+---
+
+```{r}
+library(dagitty)
+```
+
+
+## Study question 2.3.1
+
+Define the graph of figure 2.5:
+$$
+X \to R \to S \to T \gets U \gets V \to Y
+$$
+```{r}
+fig2.5 <- dagitty(
+  'dag {
+    X [pos="0,0"]
+    R [pos="1,0"]
+    S [pos="2,0"]
+    T [pos="3,0"]
+    U [pos="4,0"]
+    V [pos="5,0"]
+    Y [pos="6,0"]
+
+    X -> R -> S -> T <- U <- V -> Y
+  }'
+)
+plot(fig2.5)
+```
+
+(a) Pairs of variables that are independent conditional on $Z = \{R, V\}$:
+```{r}
+nodes = c('X', 'S', 'T', 'U', 'Y')
+Z = c('R', 'V')
+pairs <- combn(nodes, 2)
+
+tmp <- apply(pairs, 2, function(x){
+  if (dseparated(fig2.5, x[1], x[2], Z)){
+    message(x[1], ", ", x[2])
+  }
+})
+```
+
+(b) For each pair of nonadjacent variables in Fig 2.5, give a set of variables that, when conditioned on, renders that pair independent.
+```{r}
+impliedConditionalIndependencies(fig2.5)
+```
+
+(c) Like (a) above.
+
+(d) Like (b) above.
+
+
+
+
+
+
